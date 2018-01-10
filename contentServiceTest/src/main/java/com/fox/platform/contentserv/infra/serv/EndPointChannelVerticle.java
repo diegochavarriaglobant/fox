@@ -3,6 +3,7 @@ package com.fox.platform.contentserv.infra.serv;
 import com.fox.platform.contentserv.infra.handler.HandlerChannel;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Future;
+import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
@@ -14,6 +15,15 @@ import io.vertx.ext.web.handler.BodyHandler;
 public class EndPointChannelVerticle extends AbstractVerticle {
 
     private static final Logger LOG = LoggerFactory.getLogger(EndPointChannelVerticle.class);
+
+    public static void main(String[] args) {
+        Vertx vertx = Vertx.vertx();
+        vertx.deployVerticle(new EndPointChannelVerticle(), ar -> {
+            if (ar.failed()) {
+                ar.cause().printStackTrace();
+            }
+        });
+    }
 
     @Override
     public void start(Future<Void> fut) {
