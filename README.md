@@ -1,4 +1,4 @@
-= Content Service Test
+# Content Service Test
 
 You can run the file EndPointChannelVerticle.java or you can configure the Run/Debug Configuration in your IDE:
 
