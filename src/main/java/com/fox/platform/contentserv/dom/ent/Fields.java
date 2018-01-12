@@ -2,85 +2,160 @@ package com.fox.platform.contentserv.dom.ent;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
-import com.fasterxml.jackson.annotation.JsonValue;
+import lombok.Data;
 
+/**
+ * POJO class to match the Json object
+ * @author diego.chavarria
+ *
+ */
+@Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Fields {
-    public String Thumbnail;
-    public String Image;
-    public String EpisodeId;
-    public String Image620x240;
-    public String Shortname;
-    public String ProductionId;
-    public String Image145x105;
-    public String Description;
 
+    @JsonProperty(value="Thumbnail")
+    private String thumbnail;
 
-    public String tuneInDate;
-    public String tuneInHour;
-    public String eventDuration;
-    public String statisticsId;
+    @JsonProperty(value="Image")
+    private String image1;
+
+    @JsonProperty(value="EpisodeId")
+    private String episodeId;
+
+    @JsonProperty(value="Image620x240")
+    private String image620x2401;
+
+    @JsonProperty(value="Shortname")
+    private String shortName1;
+
+    @JsonProperty(value="ProductionId")
+    private String productionId;
+
+    @JsonProperty(value="Image145x105")
+    private String image145x105;
+
+    @JsonProperty(value="Description")
+    private String description;
+
+    private String tuneInDate;
+
+    private String tuneInHour;
+
+    private String eventDuration;
+
+    private String statisticsId;
 
     @JsonProperty(value="header-image")
-    public String headerImage;
+    private String headerImage;
 
-    public String validation;
-    public String metakeywords;
-    public String eventName;
-    public String embed_code;
-    public String theme;
-    public String hashtag;
+    private String validation;
+
+    private String metakeywords;
+
+    private String eventName;
+
+    @JsonProperty(value="embed_code")
+    private String embedCode;
+
+    private String theme;
+
+    private String hashtag;
 
     @JsonProperty(value="main-image")
-    public String mainImage;
+    private String mainImage;
 
-    public String auth_level_cl;
-    public String competitionName;
-    public String sport;
-    public String signal;
-    public String auth_level;
-    public String eventDate;
-    public String deck;
-    public String streams_deprecated;
-    public String channel;
+    @JsonProperty(value="auth_level_cl")
+    private String authLevelCl;
 
-    public String picture;
-    public String stats_id;
-    public String picture_national;
-    public String datafactory_id;
-    public String full_name;
+    private String competitionName;
+
+    private String sport;
+
+    private String signal;
+
+    @JsonProperty(value="auth_level")
+    private String authLevel;
+
+    private String eventDate;
+
+    private String deck;
+
+    @JsonProperty(value="streams_deprecated")
+    private String streamsDeprecated;
+
+    private String channel;
+
+    private String picture;
+
+    @JsonProperty(value="stats_id")
+    private String statsId;
+
+    @JsonProperty(value="picture_national")
+    private String pictureNational;
+
+    @JsonProperty(value="datafactory_id")
+    private String datafactoryId;
+
+    @JsonProperty(value="full_name")
+    private String fullName;
 
     @JsonProperty(value="playlist-description")
-    public String playlistDescription;
+    private String playlistDescription;
 
-    public String thumb;
-    public String image;
+    private String thumb;
+
+    private String image;
 
     @JsonProperty(value="short-name")
-    public String shortName;
-    public String image200x200;
-    public String mrss;
-    public String tags;
-    public String Character;
-    public String Actor;
-    public String name;
-    public String vendor;
-    public String url;
-    public String match_type;
-    public String team_b;
-    public String competition;
-    public String poll;
-    public String date;
-    public String team_a;
-    public String time;
+    private String shortName;
 
-    public String unbundled;
-    public String image620x240;
-    public String eventEnd;
-    public String intellicore_id;
-    public String programmingSystem;
-    public String logo;
+    private String image200x200;
+
+    private String mrss;
+
+    private String tags;
+
+    @JsonProperty(value="Character")
+    private String character;
+
+    @JsonProperty(value="Actor")
+    private String actor;
+
+    private String name;
+
+    private String vendor;
+
+    private String url;
+
+    @JsonProperty(value="match_type")
+    private String matchType;
+
+    @JsonProperty(value="team_b")
+    private String teamB;
+
+    private String competition;
+
+    private String poll;
+
+    private String date;
+
+    @JsonProperty(value="team_a")
+    private String teamA;
+
+    private String time;
+
+    private String unbundled;
+
+    private String image620x240;
+
+    private String eventEnd;
+
+    @JsonProperty(value="intellicore_id")
+    private String intellicoreId;
+
+    private String programmingSystem;
+
+    private String logo;
 
 
 

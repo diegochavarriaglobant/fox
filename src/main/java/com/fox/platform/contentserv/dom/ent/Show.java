@@ -1,13 +1,25 @@
 package com.fox.platform.contentserv.dom.ent;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+
+/**
+ * POJO class to match the Json object
+ * @author diego.chavarria
+ *
+ */
+@Data
 public class Show {
 
-    public String id;
-    public String name;
-    public String code;
-    public String publishDate;
-    public String lastupdate;
-    public String programmingSerie;
-    public ShowType type;
-    public Paradigm paradigm;
+    private String id;
+    private String name;
+    private String code;
+    private String publishDate;
+
+    @JsonProperty(value="lastupdate")
+    private String lastUpdate;
+
+    private String programmingSerie;
+    private ShowType type;
+    private Paradigm paradigm;
 }

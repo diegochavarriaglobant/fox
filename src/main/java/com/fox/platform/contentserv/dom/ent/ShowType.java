@@ -1,10 +1,15 @@
 package com.fox.platform.contentserv.dom.ent;
 
+import lombok.Data;
+
 /**
- * Created by diego on 1/9/18.
+ * POJO class to match the Json object
+ * @author diego.chavarria
+ *
  */
+@Data
 public class ShowType {
-   public String id;
-   public String name;
-   public String showGroupId;
+   private String id;
+   private String name;
+   private String showGroupId;
 }

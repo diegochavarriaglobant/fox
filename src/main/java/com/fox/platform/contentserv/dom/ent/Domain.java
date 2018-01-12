@@ -1,10 +1,18 @@
 package com.fox.platform.contentserv.dom.ent;
 
+import lombok.Data;
+
+/**
+ * POJO class to match the Json object
+ * @author diego.chavarria
+ *
+ */
+@Data
 public class Domain {
 
-    public Integer id;
-    public String  name;
-    public String  languageId;
-    public String  networkId;
-    public String  countryId;
+    private Integer id;
+    private String  name;
+    private String  languageId;
+    private String  networkId;
+    private String  countryId;
 }

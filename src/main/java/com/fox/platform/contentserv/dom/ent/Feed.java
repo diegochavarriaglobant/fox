@@ -1,8 +1,22 @@
 package com.fox.platform.contentserv.dom.ent;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Data;
+
+/**
+ * POJO class to match the Json object
+ * @author diego.chavarria
+ *
+ */
+@Data
 public class Feed {
-    public Integer took;
-    public Boolean timed_out;
-    public Shards _shards;
-    public Hits hits;
+    private Integer took;
+
+    @JsonProperty(value="timed_out")
+    private Boolean timedOut;
+
+    @JsonProperty(value="_shards")
+    private Shards shards;
+
+    private Hits hits;
 }

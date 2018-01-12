@@ -1,9 +1,14 @@
 package com.fox.platform.contentserv.dom.ent;
 
+import lombok.Data;
+
 /**
- * Created by diego on 1/9/18.
+ * POJO class to match the Json object
+ * @author diego.chavarria
+ *
  */
+@Data
 public class Feeds {
-    public String id;
-    public String countryId;
+    private String id;
+    private String countryId;
 }

@@ -30,7 +30,7 @@ public class EndPointChannelVerticle extends AbstractVerticle {
 
         try {
 
-            LOG.info("Start Http Server at port : {8090}");
+            LOG.info("Start Http Server at port : {8081}");
 
             // Create a router object.
             Router router = Router.router(vertx);
@@ -54,7 +54,7 @@ public class EndPointChannelVerticle extends AbstractVerticle {
                     .listen(
                             // Retrieve the port from the configuration,
                             // default to 8090.
-                            config().getInteger("http.port", 8090)//,
+                            config().getInteger("http.port", 8081)//,
                             //next::handle
                     );
 
@@ -71,17 +71,17 @@ public class EndPointChannelVerticle extends AbstractVerticle {
     private void handlePostChannel(RoutingContext routingContext) {
         try {
             LOG.info("Connected handlePostChannel ... ");
-            vertx.eventBus().send("com.makingdevs.ping", "Pong", res -> {
+            vertx.eventBus().send(HandlerChannel.ADDRESS, "Pong", res -> {
 
-               if(res.succeeded()) {
+               /*if(res.succeeded()) {
                     routingContext.response().setStatusCode(200);
-                    routingContext.response().end(res.result().body().toString());
-                //WebClient client = WebClient.create(vertx);
-                //HandlerChannel.handleEventBusResponse(routingContext, client);
-                }
+                    routingContext.response().end(res.result().body().toString());*/
+                    WebClient client = WebClient.create(vertx);
+                    HandlerChannel.handleEventBusResponse(routingContext, client);
+                /*}
                 else{
                     LOG.error("Unable to handleEventBusResponse operation ", res.cause());
-                }
+                }*/
             });
         } catch (Exception ex) {
             routingContext.response().setStatusCode(500).putHeader("Content-Type","text/plain").end(ex.getMessage());

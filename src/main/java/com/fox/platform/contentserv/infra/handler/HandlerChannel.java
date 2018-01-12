@@ -17,7 +17,7 @@ import java.io.IOException;
 public class HandlerChannel {
 
     public static final ObjectMapper JSON_MAPPER = new ObjectMapper();
-    public static final String ADDRESS = "omnis-service";
+    public static final String ADDRESS = "omnix-service";
     private static final Logger LOG = LoggerFactory.getLogger(HandlerChannel.class);
 
     /**
@@ -54,7 +54,7 @@ public class HandlerChannel {
                                 Buffer body = data.body();
                                 Feed feed = JSON_MAPPER.readValue(body.getBytes(), Feed.class);
                                 JSON_MAPPER.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
-                                response.end(JSON_MAPPER.writeValueAsString(feed.hits.hits));
+                                response.end(JSON_MAPPER.writeValueAsString(feed));
                             } catch (IOException e) {
                                 LOG.error("Unable to handleEventBusResponse operation", e.getMessage());
                                 response.setStatusCode(500).end(e.getMessage());
