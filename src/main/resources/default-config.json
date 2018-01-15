@@ -1,0 +1,170 @@
+{
+  "vertxOptions" : {
+    "eventLoopPoolSize": 2,
+    "workerPoolSize": 20,
+    "internalBlockingPoolSize": 20,
+    "blockedThreadCheckInterval": 1000,
+    "maxEventLoopExecuteTime": 2000000000,
+    "maxWorkerExecuteTime":  60000000000,
+    "haEnabled": false,
+    "quorumSize": 1,
+    "haGroup": "__DEFAULT__",
+    "warningExceptionTime": 5000000000,
+    "fileResolverCachingEnabled": true,
+    "metricsOptions":{
+      "enabled": false
+    },
+    "eventBusOptions": {
+      "clustered": false,
+      "clusterPingInterval": 20000,
+      "clusterPingReplyInterval": 20000,
+      "port": 0,
+      "host": "localhost",
+      "acceptBacklog": -1,
+      "clientAuth": "NONE",
+      "reconnectAttempts": 0,
+      "reconnectInterval": 1000,
+      "connectTimeout": 60000,
+      "trustAll": true
+    },
+    "addressResolverOptions": {
+      "servers": null,
+      "optResourceEnabled": true,
+      "cacheMinTimeToLive": 0,
+      "cacheMaxTimeToLive": 2147483647,
+      "cacheNegativeTimeToLive": 0,
+      "queryTimeout": 5000,
+      "maxQueries": 4,
+      "rdFlag": true,
+      "searchDomains": null,
+      "ndots": -1,
+      "rotateServers": false
+    }
+  },
+  "deploys":[
+    {
+      "className": "com.fox.platform.contentserv.infra.serv.EndPointChannelVerticle",
+      "ha": false,
+      "instances": 1,
+      "worker": false,
+      "multiThreaded" : false
+    },
+    {
+      "className": "com.fox.platform.lib.vrt.ConfigVerticle",
+      "ha": false,
+      "instances": 1,
+      "worker": false,
+      "multiThreaded" : false
+    },
+    {
+      "className": "com.fox.platform.lib.vrt.AdminServiceVerticle",
+      "ha": false,
+      "instances": 1,
+      "worker": false,
+      "multiThreaded" : false
+    }
+
+  ],
+  "admin" : {
+    "port" : 9001,
+    "metrics" : {
+      "path" : "/metrics",
+      "method" : "GET"
+    },
+    "healthcheck" : {
+      "path" : "/healthcheck",
+      "method" : "GET"
+    },
+    "config" : {
+      "path" : "/config",
+      "method" : "GET"
+    },
+    "requestConfigAddress" : "requestConfigAddress",
+    "updateConfigAddress" : "updateConfigAddress"
+
+  },
+  "contentService" : {
+    "httpServerOptions" : {
+      "port": 8081,
+      "acceptBacklog" : 10000,
+      "sendBufferSize" : 4096,
+      "receiveBufferSize" : 4096
+    },
+    "address" : "omnix_service",
+    "eventApiPath" : "/event",
+    "eventHttpMethod" : "GET",
+    "channelApiPath" : "/channel",
+    "channelHttpMethod" : "GET",
+    "liveImgGreyUrl" : "https://cdn.foxplay.com/sites/foxplay-la/files/img/logo-channels/logo-icons/50px-grey-",
+    "liveImgWhiteUrl" : "https://cdn.foxplay.com/sites/foxplay-la/files/img/logo-channels/logo-icons/50px-white-",
+    "liveImgExt" : ".png",
+    "accessControlAllowOrigin":"*",
+    "accessControlAllowMethods":"GET",
+    "accessControlMaxAge":600,
+    "proxyCMS": {
+      "endpoint":{
+        "ssl":true,
+        "trustStore":{
+          "path" : null,
+          "password" : "fox2017$",
+          "verifyHost" : false
+        },
+        "host":"search-omnix-services-sh2266ar6ket7lqcnhj3dpzccu.us-east-1.es.amazonaws.com",
+        "port":443,
+        "maxSize" : 300,
+        "defaultOrder": 999,
+        "competitionQuery" : {
+          "requestPayload": "{\"query\":{\"bool\":{\"must\":[{\"term\":{\"type.description\":\"competition\"}},{\"term\":{\"code\":${middleware-id}}}]}}}",
+          "urlPath": "/omnix_${region}/contentObjects/_search"
+        },
+        "eventQuery": {
+          "requestPayload": "{\"from\":${from},\"size\":${size},\"_source\":\"code\",\"query\":{\"bool\":{\"must\":[{\"term\":{\"type.description\":\"event\"}},{\"nested\":{\"path\":\"groups\",\"query\":{\"bool\":{\"must\":[{\"nested\":{\"path\":\"groups.feeds\",\"query\":{\"match\":{\"groups.feeds.countryId\":\"${country}\"}}}},{\"match\":{\"groups.enabled\":true}},{\"range\":{\"groups.fields.eventEnd\":{\"gte\":\"now-12h\",\"lte\":\"now+7d\"}}}]}},\"inner_hits\":{}}}]}},\"sort\":[{\"groups.fields.eventDate\":{\"order\":\"asc\",\"nested_path\": \"groups\",\"nested_filter\":{\"range\":{\"groups.fields.eventEnd\":{\"gte\":\"now-12h\",\"lte\":\"now+7d\"}}}}}]}",
+          "requestPayloadFilterMap" : {
+            "competitionName": "{\"from\":${from},\"size\":${size},\"_source\":\"code\",\"query\":{\"bool\":{\"must\":[{\"term\":{\"type.description\":\"event\"}},{\"nested\":{\"path\":\"groups\",\"query\":{\"bool\":{\"must\":[{\"nested\":{\"path\":\"groups.feeds\",\"query\":{\"match\":{\"groups.feeds.countryId\":\"${country}\"}}}},{\"match\":{\"groups.fields.competitionName.raw\":\"${competitionName}\"}},{\"match\":{\"groups.enabled\":true}},{\"range\":{\"groups.fields.eventEnd\":{\"gte\":\"now-12h\",\"lte\":\"now+7d\"}}}]}},\"inner_hits\":{}}}]}},\"sort\":[{\"groups.fields.eventDate\":{\"order\":\"asc\",\"nested_path\":\"groups\",\"nested_filter\":{\"range\":{\"groups.fields.eventEnd\":{\"gte\":\"now-12h\",\"lte\":\"now+7d\"}}}}}]}"
+          },
+          "urlPath": "/omnix_${region}/contentObjects/_search"
+        },
+        "channelQuery": {
+          "requestPayload": "{\"query\":{\"bool\":{\"must\":[{\"term\":{\"type.description\":\"olympicschannel\"}},{\"nested\":{\"path\":\"groups\",\"query\":{\"bool\":{\"must\":[{\"nested\":{\"path\":\"groups.feeds\",\"query\":{\"match\":{\"groups.feeds.countryId\":\"${country}\"}}}},{\"match\":{\"groups.enabled\":true}}]}},\"inner_hits\":{}}}]}},\"sort\":[{\"groups.fields.id.raw\":{\"nested_path\":\"groups\",\"order\":\"asc\"}}]}",
+          "urlPath": "/omnix_${region}/contentObjects/_search?_source=code.groups.fields"
+        },
+        "streamQuery":{
+          "requestPayload":"{\"size\":${size}, \"_source\":\"code\",\"query\":{\"bool\":{\"must\":[{\"term\":{\"type.description\":\"signal\"}},{\"terms\":{\"code\":[${signalIds}]}},{\"nested\":{\"path\":\"groups\",\"query\":{\"bool\":{\"must\":[{\"nested\":{\"path\":\"groups.feeds\",\"query\":{\"match\":{\"groups.feeds.countryId\":\"${country}\"}}}},{\"match\":{\"groups.enabled\":true}}]}},\"inner_hits\":{}}}]}}}",
+          "urlPath":"/omnix_${region}/contentObjects/_search"
+        }
+      },
+      "circuitBreaker": {
+        "name" : "ProxyElasticCircuitBreaker",
+        "maxFailures":5,
+        "timeout":5000,
+        "resetTimeout":10000,
+        "killswitch" : false
+      },
+      "address":"ProxyCMSAddr"
+    },
+    "proxyVMS":{
+      "address":"ProxyVMSGetMediaUrlAddr",
+      "endpoint":{
+        "truststore":{
+          "path" : null,
+          "password" : "fox2017$",
+          "verifyHost" : false
+        },
+        "ssl":true,
+        "port":443,
+        "host":"feed.theplatform.com",
+        "path":"/f/flac/live-events/${streamIds}?form=cjson&pretty=true&fields=id,content,content.url",
+        "mapUrlPath":{
+          "BR":"/f/flac/live-events-br/${streamIds}?form=cjson&pretty=true&fields=id,content,content.url"
+        }
+      },
+      "circuitBreaker": {
+        "name" : "ProxyMpxCircuitBreaker",
+        "maxFailures":5,
+        "timeout":3000,
+        "resetTimeout":10000,
+        "killswitch" : false
+      }
+    }
+  }
+}

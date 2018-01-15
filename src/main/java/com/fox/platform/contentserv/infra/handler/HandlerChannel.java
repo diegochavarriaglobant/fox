@@ -13,11 +13,12 @@ import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 
 import java.io.IOException;
+import java.util.Optional;
 
 public class HandlerChannel {
 
-    public static final ObjectMapper JSON_MAPPER = new ObjectMapper();
-    public static final String ADDRESS = "omnix-service";
+    private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
+    public static final String ADDRESS = "omnix_service";
     private static final Logger LOG = LoggerFactory.getLogger(HandlerChannel.class);
 
     /**
@@ -29,7 +30,12 @@ public class HandlerChannel {
 
         try {
             HttpServerResponse response = routingContext.response();
-            String countryId = routingContext.request().getParam("countryId");
+
+            String countryId = Optional
+                    .ofNullable(routingContext.request().getParam("countryId"))
+                    .orElseThrow(() -> new Exception("Invalid country Id"));
+
+
 
             String jsonObj = "{\"query\":{ \"bool\":{\"must\":[{\"term\": {\"type.description\": \"olympicschannel\"}}," +
                     "{\"nested\": {\"path\": \"groups\",\"query\": {\"bool\": {\"must\": [{\"nested\": {\"path\": \"groups.feeds\",\"query\": " +

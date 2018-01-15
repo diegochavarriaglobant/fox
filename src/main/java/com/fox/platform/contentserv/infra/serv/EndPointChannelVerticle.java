@@ -1,67 +1,78 @@
 package com.fox.platform.contentserv.infra.serv;
 
+import com.fox.platform.contentserv.cfg.ContentServiceConfig;
+import com.fox.platform.contentserv.cfg.impl.ContentServiceConfigImpl;
 import com.fox.platform.contentserv.infra.handler.HandlerChannel;
-import io.vertx.core.AbstractVerticle;
+import com.google.inject.Inject;
 import io.vertx.core.Future;
-import io.vertx.core.Vertx;
+import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.client.WebClient;
-import io.vertx.ext.web.handler.BodyHandler;
 
-public class EndPointChannelVerticle extends AbstractVerticle {
+import static com.sun.javafx.binding.ContentBinding.bind;
 
-    private static final Logger LOG = LoggerFactory.getLogger(EndPointChannelVerticle.class);
+public class EndPointChannelVerticle extends ContentVerticle  {
 
-    public static void main(String[] args) {
-        Vertx vertx = Vertx.vertx();
-        vertx.deployVerticle(new EndPointChannelVerticle(), ar -> {
-            if (ar.failed()) {
-                ar.cause().printStackTrace();
+    private static final Logger logger = LoggerFactory.getLogger(EndPointChannelVerticle.class);
+
+    @Override
+    public void start(Future<Void> future) throws Exception {
+
+        Future<Void> startFuture = Future.future();
+        super.start(startFuture);
+
+        startFuture.setHandler(handler -> {
+            if (handler.succeeded()) {
+
+                if (logger.isInfoEnabled()) {
+                    logger.info("Start Content Service Http Server with config: " + config()
+                            .getJsonObject(ContentServiceConfigImpl.CONFIG_FIELD).encodePrettily());
+                }
+
+                Router router = getRouter();
+
+                vertx.createHttpServer(contentServiceConfig.getHttpServerOptions())
+                        .requestHandler(router::accept)
+                        .listen(
+                                result -> {
+                                    if (result.succeeded()) {
+                                        future.complete();
+                                    } else {
+                                        future.fail(result.cause());
+                                    }
+                                });
+            } else {
+                future.fail(handler.cause());
             }
         });
     }
 
-    @Override
-    public void start(Future<Void> fut) {
+    /**
+     * Get router with the Endpoint configuration so it can route the request
+     * for getEvent and getChannel endpoints
+     *
+     * @return Router
+     */
+    private Router getRouter(){
+        Router router = Router.router(vertx);
 
-        try {
+        HttpMethod channelHttpMethod = contentServiceConfig.getChannelHttpMethod();
 
-            LOG.info("Start Http Server at port : {8081}");
+        router.route("/").handler(routingContext -> {
+            HttpServerResponse response = routingContext.response();
+            response
+                    .putHeader("content-type", "text/html")
+                    .end("<h1>Hello from my first Vert.x 3 application</h1>");
+        });
 
-            // Create a router object.
-            Router router = Router.router(vertx);
+        router.post(contentServiceConfig.getApiPath())
+                .handler(this::handlePostChannel);
 
-            router.route().handler(BodyHandler.create());
-            // Bind "/" to our hello message.
-            router.route("/").handler(routingContext -> {
-                HttpServerResponse response = routingContext.response();
-                response
-                        .putHeader("content-type", "text/html")
-                        .end("<h1>Hello from my first Vert.x 3 application</h1>");
-            });
-
-
-            router.post("/channel").handler(this::handlePostChannel);
-
-            // Create the HTTP server and pass the "accept" method to the request handler.
-            vertx
-                    .createHttpServer()
-                    .requestHandler(router::accept)
-                    .listen(
-                            // Retrieve the port from the configuration,
-                            // default to 8090.
-                            config().getInteger("http.port", 8081)//,
-                            //next::handle
-                    );
-
-        } catch (final Exception ex) {
-            LOG.error("Unable to start operation ", ex);
-        }
-
+        return router;
     }
 
     /**
@@ -70,7 +81,7 @@ public class EndPointChannelVerticle extends AbstractVerticle {
      */
     private void handlePostChannel(RoutingContext routingContext) {
         try {
-            LOG.info("Connected handlePostChannel ... ");
+            logger.info("Connected handlePostChannel ... ");
             vertx.eventBus().send(HandlerChannel.ADDRESS, "Pong", res -> {
 
                /*if(res.succeeded()) {
@@ -80,12 +91,12 @@ public class EndPointChannelVerticle extends AbstractVerticle {
                     HandlerChannel.handleEventBusResponse(routingContext, client);
                 /*}
                 else{
-                    LOG.error("Unable to handleEventBusResponse operation ", res.cause());
+                   logger.error("Unable to handleEventBusResponse operation ", res.cause());
                 }*/
             });
         } catch (Exception ex) {
             routingContext.response().setStatusCode(500).putHeader("Content-Type","text/plain").end(ex.getMessage());
-            LOG.error("Unable to handlePostChannel operation ", ex);
+            logger.error("Unable to handlePostChannel operation ", ex);
         }
 
     }
