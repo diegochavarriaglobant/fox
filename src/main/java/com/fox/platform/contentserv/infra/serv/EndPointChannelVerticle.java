@@ -1,9 +1,8 @@
 package com.fox.platform.contentserv.infra.serv;
 
-import com.fox.platform.contentserv.cfg.ContentServiceConfig;
+
 import com.fox.platform.contentserv.cfg.impl.ContentServiceConfigImpl;
-import com.fox.platform.contentserv.infra.handler.HandlerChannel;
-import com.google.inject.Inject;
+import com.fox.platform.contentserv.exc.ContentServiceException;
 import io.vertx.core.Future;
 import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerResponse;
@@ -11,10 +10,12 @@ import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
-import io.vertx.ext.web.client.WebClient;
+import java.util.Optional;
 
-import static com.sun.javafx.binding.ContentBinding.bind;
-
+/**
+ * Class that connect omnix service
+ * @author diego.chavarria
+ */
 public class EndPointChannelVerticle extends ContentVerticle  {
 
     private static final Logger logger = LoggerFactory.getLogger(EndPointChannelVerticle.class);
@@ -60,8 +61,6 @@ public class EndPointChannelVerticle extends ContentVerticle  {
     private Router getRouter(){
         Router router = Router.router(vertx);
 
-        HttpMethod channelHttpMethod = contentServiceConfig.getChannelHttpMethod();
-
         router.route("/").handler(routingContext -> {
             HttpServerResponse response = routingContext.response();
             response
@@ -82,17 +81,20 @@ public class EndPointChannelVerticle extends ContentVerticle  {
     private void handlePostChannel(RoutingContext routingContext) {
         try {
             logger.info("Connected handlePostChannel ... ");
-            vertx.eventBus().send(HandlerChannel.ADDRESS, "Pong", res -> {
+            String countryId = Optional
+                    .ofNullable(routingContext.request().getParam("countryId"))
+                    .orElseThrow(() -> new ContentServiceException("Invalid country Id"));
 
-               /*if(res.succeeded()) {
+            vertx.eventBus().send(contentServiceConfig.getAddressProxy(), countryId, res -> {
+
+               if(res.succeeded()) {
                     routingContext.response().setStatusCode(200);
-                    routingContext.response().end(res.result().body().toString());*/
-                    WebClient client = WebClient.create(vertx);
-                    HandlerChannel.handleEventBusResponse(routingContext, client);
-                /*}
+                    routingContext.response().end(res.result().body().toString());
+                }
                 else{
                    logger.error("Unable to handleEventBusResponse operation ", res.cause());
-                }*/
+                   routingContext.response().setStatusCode(500).putHeader("Content-Type","text/plain").end(res.cause().getStackTrace().toString());
+                }
             });
         } catch (Exception ex) {
             routingContext.response().setStatusCode(500).putHeader("Content-Type","text/plain").end(ex.getMessage());

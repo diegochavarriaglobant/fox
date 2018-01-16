@@ -2,8 +2,6 @@ package com.fox.platform.contentserv.cfg;
 
 
 import com.fox.platform.lib.cfg.ServiceConfig;
-import com.fox.platform.lib.cfg.impl.MergeHttpServerOptions;
-import io.vertx.core.http.HttpMethod;
 
 /**
  * Inbterface that extends the behaviour of the ServiceConfig
@@ -11,12 +9,41 @@ import io.vertx.core.http.HttpMethod;
  *
  * */
 public interface ContentServiceConfig extends ServiceConfig {
-
+    /**
+     * Api path
+     * @return
+     */
     public String getApiPath();
+
+    /**
+     * Port Omnix Service
+     * @return
+     */
     public int getPortOmnixService();
+
+    /**
+     * Uri Omnix Service
+     * @return
+     */
     public String getUriOmnixService();
+
+    /**
+     * Query Omnix Service
+     * @return
+     */
     public String getQueryOmnixService();
-    public HttpMethod getChannelHttpMethod();
+
+    /**
+     * Address proxy
+     * @return
+     */
+    public String getAddressProxy();
+
+    /**
+     * Host Omnix Service
+     * @return
+     */
+    public String getHostOmnixService();
 
 
 

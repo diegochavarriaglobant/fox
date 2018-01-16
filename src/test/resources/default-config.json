@@ -43,14 +43,7 @@
   },
   "deploys":[
     {
-      "className": "com.fox.platform.contentserv.infra.serv.EndPointChannelVerticle",
-      "ha": false,
-      "instances": 1,
-      "worker": false,
-      "multiThreaded" : false
-    },
-    {
-      "className": "com.fox.platform.contentserv.infra.serv.ProxyChannelVerticle",
+      "className": "com.fox.platform.contentserv.infra.serv.EndPointChannelVerticleTest",
       "ha": false,
       "instances": 1,
       "worker": false,
