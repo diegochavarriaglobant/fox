@@ -2,13 +2,11 @@ package com.fox.platform.contentserv.infra.serv;
 
 import com.fox.platform.contentserv.cfg.ContentServiceConfig;
 import com.fox.platform.contentserv.cfg.impl.ContentServiceConfigImpl;
-import com.fox.platform.contentserv.dom.ent.Feed;
 import com.fox.platform.lib.cfg.ConfigLibFactory;
 import io.vertx.core.DeploymentOptions;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClient;
-import io.vertx.core.http.HttpServer;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.unit.Async;
 import io.vertx.ext.web.client.HttpResponse;
@@ -21,11 +19,9 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import io.vertx.ext.unit.junit.VertxUnitRunner;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.ServerSocket;
-
 import io.vertx.ext.unit.TestContext;
 import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertNotNull;
@@ -94,8 +90,7 @@ public class EndPointChannelVerticleTest {
     }
 
 
-
-    @Test
+       @Test
     public void loadConfigFile(){
         JsonObject configFile = loadResource(URL_DEFAULT_CONFIG);
         assertNotNull(configFile);
@@ -126,6 +121,23 @@ public class EndPointChannelVerticleTest {
             logger.error(ex.getStackTrace().toString());
             return null;
         }
+    }
+    
+    @Test
+    public void proxyChannelVerticleProcess() throws Exception{
+    	
+    	
+    	ProxyChannelVerticle verticle = new ProxyChannelVerticle();
+    	
+    	 JsonObject configFile = loadResource(URL_DEFAULT_CONFIG);
+         contentServiceConfig = (ContentServiceConfig) ConfigLibFactory.FACTORY.createServiceConfig(
+                 configFile,
+                 ContentServiceConfigImpl.CONFIG_FIELD,
+                 ContentServiceConfigImpl.class
+         );
+      	JsonObject jsonObject = verticle.processQuery(contentServiceConfig.getQueryOmnixService(), "MX");
+        assertNotNull(jsonObject);
+        
     }
 
 

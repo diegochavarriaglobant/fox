@@ -4,7 +4,6 @@ package com.fox.platform.contentserv.infra.serv;
 import com.fox.platform.contentserv.cfg.impl.ContentServiceConfigImpl;
 import com.fox.platform.contentserv.exc.ContentServiceException;
 import io.vertx.core.Future;
-import io.vertx.core.http.HttpMethod;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;

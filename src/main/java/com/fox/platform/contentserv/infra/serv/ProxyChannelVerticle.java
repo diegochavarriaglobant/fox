@@ -1,6 +1,5 @@
 package com.fox.platform.contentserv.infra.serv;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fox.platform.contentserv.dom.ent.Feed;
 import com.fox.platform.contentserv.exc.ContentServiceException;
 import io.vertx.core.Future;
@@ -13,7 +12,7 @@ import io.vertx.ext.web.client.HttpResponse;
 import io.vertx.ext.web.client.WebClient;
 
 public class ProxyChannelVerticle extends ContentVerticle {
-    private static final ObjectMapper JSON_MAPPER = new ObjectMapper();
+    
     private static final Logger logger = LoggerFactory.getLogger(ProxyChannelVerticle.class);
 
     @Override
@@ -26,7 +25,7 @@ public class ProxyChannelVerticle extends ContentVerticle {
             future.complete();
         } catch (ContentServiceException e) {
             future.complete();
-            logger.error("Unable to onMessage operation ", e.getStackTrace());
+            logger.error("Unable to onMessage operation ", e.getStackTrace().toString());
         }
 
 
@@ -55,16 +54,16 @@ public class ProxyChannelVerticle extends ContentVerticle {
                             message.reply(JsonObject.mapFrom(feed.getHits()));
 
                         } else {
-                            logger.error("Unable to handleEventBusResponse operation", response.cause().getStackTrace());
+                            logger.error("Unable to handleEventBusResponse operation", response.cause().getStackTrace().toString());
                             message.fail(response.hashCode(), response.cause().getMessage());
 
                         }
                     });
         } catch (ContentServiceException e) {
             message.fail(e.hashCode(), e.getCause().getMessage());
-            logger.error("Unable to onMessage operation ", e.getStackTrace());
+            logger.error("Unable to onMessage operation ", e.getStackTrace().toString());
         } catch (Exception ex) {
-            logger.error("Unable to onMessage operation ", ex.getStackTrace());
+            logger.error("Unable to onMessage operation ", ex.getStackTrace().toString());
             message.fail(ex.hashCode(), ex.getCause().getMessage());
         }
 
@@ -76,7 +75,7 @@ public class ProxyChannelVerticle extends ContentVerticle {
             return new JsonObject(query);
 
         } catch (ContentServiceException ex) {
-            logger.error("Unable to processQuery operation ", ex.getStackTrace());
+            logger.error("Unable to processQuery operation ", ex.getStackTrace().toString());
             return null;
         }
     }
