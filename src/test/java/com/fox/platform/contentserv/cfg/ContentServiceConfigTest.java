@@ -4,6 +4,7 @@ import static junit.framework.TestCase.assertTrue;
 import static org.junit.Assert.assertNotNull;
 import java.io.InputStream;
 import org.apache.commons.io.IOUtils;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -37,6 +38,14 @@ public class ContentServiceConfigTest {
     }
   }
 
+
+  @Before
+  public void loadConfigFile() {
+    JsonObject configFile = loadResource(URL_DEFAULT_CONFIG);
+    assertNotNull(configFile);
+    assertTrue(!configFile.isEmpty());
+  }
+
   @Test
   public void loadConfig() {
 
@@ -49,12 +58,6 @@ public class ContentServiceConfigTest {
     assertNotNull(contentServiceConfig);
   }
 
-  @Test
-  public void loadConfigFile() {
-    JsonObject configFile = loadResource(URL_DEFAULT_CONFIG);
-    assertNotNull(configFile);
-    assertTrue(!configFile.isEmpty());
-  }
 
 
 }
