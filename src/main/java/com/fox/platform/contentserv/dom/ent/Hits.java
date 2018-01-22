@@ -1,24 +1,26 @@
 package com.fox.platform.contentserv.dom.ent;
 
+import java.util.List;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
-import java.util.List;
-
 /**
  * POJO class to match the Json object
+ * 
  * @author diego.chavarria
  *
  */
 @Data
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Hits {
-    private Integer total;
+  private Integer total;
 
-    @JsonProperty(value="max_score")
-    private Integer maxScore;
+  @JsonProperty(value = "max_score")
+  private Integer maxScore;
 
-    @JsonProperty(value="_shards")
-    private Shards shards;
+  @JsonProperty(value = "_shards")
+  private Shards shards;
 
-    private List<Hit> hits;
+  private List<Hit> hits;
 }

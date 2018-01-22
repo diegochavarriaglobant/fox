@@ -64,7 +64,6 @@
             <artifactId>config</artifactId>
             <version>${projectlibs.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.fox.platform.lib</groupId>
             <artifactId>circuitbreaker</artifactId>
@@ -127,6 +126,7 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+    
     <build>
         <resources>
             <resource>
@@ -152,7 +152,6 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-
             <!-- Plugin Build a Fat Jar -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -170,7 +169,6 @@
                                         implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                                     <manifestEntries>
                                         <Main-Class>com.fox.platform.lib.lnchr.App</Main-Class>
-
                                     </manifestEntries>
                                 </transformer>
                             </transformers>
@@ -181,7 +179,6 @@
                     </execution>
                 </executions>
             </plugin>
-
             <!-- Plugin Delete Original Jar -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
