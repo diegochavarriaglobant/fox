@@ -80,12 +80,10 @@ public class EndPointChannelVerticleTest {
     Async async = context.async();
     WebClient client = WebClient.create(vertx);
     client.post(port, REQUEST_URL, "/channel?countryId=MX").ssl(false)
-        .putHeader(HttpHeaders.CONTENT_LENGTH.toString(), LENGTH)
-        .putHeader(HttpHeaders.CONTENT_TYPE.toString(), JSON_MIMETYPE)
-        .putHeader(HttpHeaders.CACHE_CONTROL.toString(), NO_CACHE).send(response -> {
+        .putHeader(HttpHeaders.CONTENT_TYPE.toString(), JSON_MIMETYPE).send(response -> {
           if (response.succeeded()) {
             HttpResponse<Buffer> data = response.result();
-            context.assertNotNull(data.bodyAsJsonObject());
+            context.assertNotNull(data.bodyAsJsonArray());
           }
           client.close();
           async.complete();
