@@ -8,7 +8,7 @@ import io.vertx.core.Future;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.http.impl.MimeMapping;
-import io.vertx.core.json.JsonObject;
+import io.vertx.core.json.JsonArray;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
@@ -91,7 +91,7 @@ public class EndPointChannelVerticle extends ContentVerticle {
 
         if (res.succeeded()) {
           routingContext.response().setStatusCode(200)
-              .end(new JsonObject(res.result().body().toString()).encodePrettily());
+              .end(new JsonArray(res.result().body().toString()).encodePrettily());
         } else {
           logger.error("Unable to handleEventBusResponse operation ", res.cause());
           routingContext.response().setStatusCode(500)

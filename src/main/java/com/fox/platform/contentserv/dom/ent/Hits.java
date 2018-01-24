@@ -14,13 +14,11 @@ import lombok.Data;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Hits {
+
   private Integer total;
 
   @JsonProperty(value = "max_score")
   private Integer maxScore;
-
-  @JsonProperty(value = "_shards")
-  private Shards shards;
 
   private List<Hit> hits;
 }

@@ -11,14 +11,8 @@ import lombok.Data;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Source {
+public class InnerHits {
 
-  private String id;
-
-  private Boolean enabled;
-
-  private String priority;
-
-  private SourceFields fields;
+  private Groups groups;
 
 }

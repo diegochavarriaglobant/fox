@@ -1,6 +1,7 @@
 package com.fox.platform.contentserv.dom.ent;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 /**
@@ -11,14 +12,9 @@ import lombok.Data;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Source {
+public class GroupsHitsHits {
 
-  private String id;
-
-  private Boolean enabled;
-
-  private String priority;
-
-  private SourceFields fields;
+  @JsonProperty(value = "_source")
+  private Source source;
 
 }

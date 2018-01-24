@@ -12,14 +12,24 @@ import lombok.Data;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Feed {
-  private Integer took;
+public class SourceFields {
 
-  @JsonProperty(value = "timed_out")
-  private Boolean timedOut;
+  @JsonProperty(value = "auth_level")
+  private String authLevel;
 
-  @JsonProperty(value = "_shards")
-  private Shards shards;
+  @JsonProperty
+  private String id;
 
-  private Hits hits;
+  @JsonProperty
+  private String logo;
+
+  @JsonProperty
+  private String urn;
+
+  @JsonProperty
+  private String signal;
+
+  @JsonProperty
+  private String enabled;
+
 }

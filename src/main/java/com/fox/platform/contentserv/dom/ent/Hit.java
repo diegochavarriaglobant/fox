@@ -29,5 +29,10 @@ public class Hit {
   @JsonProperty(value = "_source")
   private Source source;
 
-  private List<Sort> sort;
+  private List<String> sort;
+
+  @JsonProperty(value = "inner_hits")
+  private InnerHits innerHits;
+
+
 }
