@@ -33,9 +33,8 @@ public class EndPointChannelVerticleTest {
   private static final String JSON_MIMETYPE = MimeMapping.getMimeTypeForExtension("json");
   private static Logger logger = LoggerFactory.getLogger(EndPointChannelVerticleTest.class);
   private static final String URL_DEFAULT_CONFIG = "/default-config.json";
-  private static final String NO_CACHE = "no-cache";
-  private static final String LENGTH = "0";
   private static final String REQUEST_URL = "localhost";
+  private static final String ERROR_MESSAGE = "Deployment failed!";
 
   private ContentServiceConfigTest contentServiceConfigTest = new ContentServiceConfigTest();
 
@@ -51,10 +50,18 @@ public class EndPointChannelVerticleTest {
     DeploymentOptions options = new DeploymentOptions().setConfig(configFile);
 
     vertx = Vertx.vertx();
-    vertx.deployVerticle(EndPointChannelVerticle.class.getName(), options,
-        context.asyncAssertSuccess());
-    vertx.deployVerticle(ProxyChannelVerticle.class.getName(), options,
-        context.asyncAssertSuccess());
+    vertx.deployVerticle(EndPointChannelVerticle.class.getName(), options, result -> {
+      if (result.succeeded()) {
+        vertx.deployVerticle(ProxyChannelVerticle.class.getName(), options, res -> {
+          if (result.succeeded()) {
+            context.async().complete();
+          } else
+            logger.error(ERROR_MESSAGE, result.cause());
+        });
+        context.async().complete();
+      } else
+        logger.error(ERROR_MESSAGE, result.cause());
+    });
   }
 
   @After
