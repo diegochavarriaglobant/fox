@@ -90,10 +90,10 @@ public class EndPointChannelVerticleTest {
         .putHeader(HttpHeaders.CONTENT_TYPE.toString(), JSON_MIMETYPE).send(response -> {
           if (response.succeeded()) {
             HttpResponse<Buffer> data = response.result();
-            context.assertNotNull(data.bodyAsJsonArray());
+            context.assertNotNull(data.body().toJsonObject());
+            client.close();
+            async.complete();
           }
-          client.close();
-          async.complete();
         });
   }
 

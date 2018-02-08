@@ -16,13 +16,7 @@
         <newrelic.dropwizard.version>3.4.1</newrelic.dropwizard.version>
     </properties>
 
-    <dependencies>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>3.8.1</version>
-            <scope>test</scope>
-        </dependency>
+    <dependencies>       
         <dependency>
             <groupId>io.vertx</groupId>
             <artifactId>vertx-config</artifactId>

@@ -8,7 +8,7 @@ import io.vertx.core.Future;
 import io.vertx.core.http.HttpHeaders;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.http.impl.MimeMapping;
-import io.vertx.core.json.JsonArray;
+import io.vertx.core.json.JsonObject;
 import io.vertx.core.logging.Logger;
 import io.vertx.core.logging.LoggerFactory;
 import io.vertx.ext.web.Router;
@@ -24,6 +24,7 @@ public class EndPointChannelVerticle extends ContentVerticle {
   private static final Logger logger = LoggerFactory.getLogger(EndPointChannelVerticle.class);
   private static final String TEXT_MIMETYPE = MimeMapping.getMimeTypeForExtension("text");
   private static final String HTML_MIMETYPE = MimeMapping.getMimeTypeForExtension("html");
+  private static final String JSON_MIMETYPE = MimeMapping.getMimeTypeForExtension("json");
   private String country_id = null;
 
   @Override
@@ -74,7 +75,9 @@ public class EndPointChannelVerticle extends ContentVerticle {
     router.route(contentServiceConfig.getDefaultApiMethod(), contentServiceConfig.getApiPath())
         .handler(this::handlePostChannel);
 
+
     return router;
+
   }
 
   /**
@@ -86,12 +89,15 @@ public class EndPointChannelVerticle extends ContentVerticle {
       logger.info("Connected handlePostChannel ... ");
       country_id = Optional.ofNullable(routingContext.request().getParam("countryId"))
           .orElseThrow(() -> new ContentServiceException("Invalid country Id"));
+      JsonObject data = new JsonObject();
+      data.put("country", country_id);
 
-      vertx.eventBus().send(contentServiceConfig.getAddressProxy(), country_id, res -> {
+      vertx.eventBus().send(contentServiceConfig.getAddressProxy(), data, res -> {
 
         if (res.succeeded()) {
           routingContext.response().setStatusCode(200)
-              .end(new JsonArray(res.result().body().toString()).encodePrettily());
+              .putHeader(HttpHeaders.CONTENT_TYPE, JSON_MIMETYPE)
+              .end(new JsonObject(res.result().body().toString()).encodePrettily());
         } else {
           logger.error("Unable to handleEventBusResponse operation ", res.cause());
           routingContext.response().setStatusCode(500)

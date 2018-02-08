@@ -42,8 +42,15 @@
     }
   },
   "deploys":[
+     {
+      "className": "com.fox.platform.contentserv.infra.serv.EndPointChannelVerticle",
+      "ha": false,
+      "instances": 1,
+      "worker": false,
+      "multiThreaded" : false
+    },
     {
-      "className": "com.fox.platform.contentserv.infra.serv.EndPointChannelVerticleTest",
+      "className": "com.fox.platform.contentserv.infra.serv.ProxyChannelVerticle",
       "ha": false,
       "instances": 1,
       "worker": false,
@@ -63,7 +70,6 @@
       "worker": false,
       "multiThreaded" : false
     }
-
   ],
   "admin" : {
     "port" : 9001,

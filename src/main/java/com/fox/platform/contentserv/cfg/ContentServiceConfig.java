@@ -67,6 +67,10 @@ public interface ContentServiceConfig extends ServiceConfig {
    */
   public HttpMethod getDefaultApiMethod();
 
+  public ContentProxyConfig getProxyVMS();
+
+  public void merge(ContentServiceConfig other);
+
 
 
 }

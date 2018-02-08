@@ -30,4 +30,11 @@ public class ContentVerticle extends AbstractConfigurationVerticle {
 
     super.start(startFuture);
   }
+
+
+  public void onConfigChange() {
+    if (logger.isInfoEnabled()) {
+      logger.info("Change Content Service Config");
+    }
+  }
 }

@@ -41,7 +41,7 @@
       "rotateServers": false
     }
   },
-  "deploys":[
+  "deploys":[    
     {
       "className": "com.fox.platform.contentserv.infra.serv.EndPointChannelVerticle",
       "ha": false,
@@ -70,7 +70,6 @@
       "worker": false,
       "multiThreaded" : false
     }
-
   ],
   "admin" : {
     "port" : 9001,
@@ -145,7 +144,7 @@
         "maxFailures":5,
         "timeout":5000,
         "resetTimeout":10000,
-        "killswitch" : false
+        "killswitch" : true
       },
       "address":"ProxyCMSAddr"
     },
@@ -168,9 +167,9 @@
       "circuitBreaker": {
         "name" : "ProxyMpxCircuitBreaker",
         "maxFailures":5,
-        "timeout":3000,
+        "timeout":4000,
         "resetTimeout":10000,
-        "killswitch" : false
+        "killswitch" : true
       }
     }
   }

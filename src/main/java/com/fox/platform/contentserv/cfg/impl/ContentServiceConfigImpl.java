@@ -37,6 +37,7 @@ public class ContentServiceConfigImpl implements ContentServiceConfig {
   private String addressProxy;
   private String defaultPath;
   private HttpMethod defaultApiMethod;
+  private ProxyVMSConfigImpl proxyVMS;
 
   public ContentServiceConfigImpl() {
 
@@ -50,6 +51,7 @@ public class ContentServiceConfigImpl implements ContentServiceConfig {
     this.addressProxy = ADDRESS_PROXY;
     this.defaultPath = DEFAULT_PATH;
     this.defaultApiMethod = DEFAULT_API_METHOD;
+    this.proxyVMS = new ProxyVMSConfigImpl();
 
   }
 
@@ -62,6 +64,10 @@ public class ContentServiceConfigImpl implements ContentServiceConfig {
     return apiPath;
   }
 
+  public void setApiPath(String apiPath) {
+    this.apiPath = apiPath;
+  }
+
   /**
    * Port Omnix Service
    * 
@@ -69,6 +75,10 @@ public class ContentServiceConfigImpl implements ContentServiceConfig {
    */
   public int getPortOmnixService() {
     return portOmnixService;
+  }
+
+  public void setPortOmnixService(int portOmnixService) {
+    this.portOmnixService = portOmnixService;
   }
 
   /**
@@ -80,6 +90,11 @@ public class ContentServiceConfigImpl implements ContentServiceConfig {
     return hostOmnixService;
   }
 
+  public void setHostOmnixService(String hostOmnixService) {
+    this.hostOmnixService = hostOmnixService;
+  }
+
+
   /**
    * Uri Omnix Service
    * 
@@ -89,6 +104,10 @@ public class ContentServiceConfigImpl implements ContentServiceConfig {
     return uriOmnixService;
   }
 
+  public void setUriOmnixService(String uriOmnixService) {
+    this.uriOmnixService = uriOmnixService;
+  }
+
   /**
    * Query Omnix Service
    * 
@@ -96,6 +115,10 @@ public class ContentServiceConfigImpl implements ContentServiceConfig {
    */
   public String getQueryOmnixService() {
     return queryOmnixService;
+  }
+
+  public void setQueryOmnixService(String queryOmnixService) {
+    this.queryOmnixService = queryOmnixService;
   }
 
 
@@ -108,6 +131,11 @@ public class ContentServiceConfigImpl implements ContentServiceConfig {
     return addressProxy;
   }
 
+  public void setAddressProxy(String addressProxy) {
+    this.addressProxy = addressProxy;
+  }
+
+
   /**
    * Default path
    * 
@@ -115,6 +143,10 @@ public class ContentServiceConfigImpl implements ContentServiceConfig {
    */
   public String getDefaultPath() {
     return defaultPath;
+  }
+
+  public void setDefaultPath(String defaultPath) {
+    this.defaultPath = defaultPath;
   }
 
   /**
@@ -126,6 +158,11 @@ public class ContentServiceConfigImpl implements ContentServiceConfig {
     return defaultApiMethod;
   }
 
+  public void setDefaultApiMethod(HttpMethod defaultApiMethod) {
+    this.defaultApiMethod = defaultApiMethod;
+  }
+
+
   @Override
   public HttpServerOptions getHttpServerOptions() {
     return httpServerOptions;
@@ -133,5 +170,29 @@ public class ContentServiceConfigImpl implements ContentServiceConfig {
 
   public void setHttpServerOptions(MergeHttpServerOptions httpServerOptions) {
     this.httpServerOptions = httpServerOptions;
+  }
+
+  public ProxyVMSConfigImpl getProxyVMS() {
+    return proxyVMS;
+  }
+
+  public void setProxyVMS(ProxyVMSConfigImpl proxyVMS) {
+    this.proxyVMS = proxyVMS;
+  }
+
+  @Override
+  public void merge(ContentServiceConfig other) {
+
+    this.setApiPath(other.getApiPath());
+    this.setPortOmnixService(other.getPortOmnixService());
+    this.setHostOmnixService(other.getHostOmnixService());
+    this.setUriOmnixService(other.getUriOmnixService());
+    this.setQueryOmnixService(other.getQueryOmnixService());
+    this.setAddressProxy(other.getAddressProxy());
+    this.setDefaultPath(other.getDefaultPath());
+    this.setDefaultApiMethod(other.getDefaultApiMethod());
+    httpServerOptions.merge(other.getHttpServerOptions());
+    proxyVMS.merge((ProxyVMSConfigImpl) other.getProxyVMS());
+
   }
 }
