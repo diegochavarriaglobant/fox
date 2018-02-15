@@ -143,8 +143,8 @@
         "name" : "ProxyElasticCircuitBreaker",
         "maxFailures":5,
         "timeout":5000,
-        "resetTimeout":10000,
-        "killswitch" : true
+        "resetTimeout":30000,
+        "killswitch" : false
       },
       "address":"ProxyCMSAddr"
     },
@@ -168,8 +168,8 @@
         "name" : "ProxyMpxCircuitBreaker",
         "maxFailures":5,
         "timeout":4000,
-        "resetTimeout":10000,
-        "killswitch" : true
+        "resetTimeout":20000,
+        "killswitch" : false
       }
     }
   }
